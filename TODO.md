@@ -6,5 +6,7 @@
 
 2. Set up maps      
 
+3. Change the details block
+
 #Back end
 1. Set up databases
