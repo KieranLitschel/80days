@@ -1,6 +1,0 @@
-http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/{country}/{currency}/{locale}/{originPlace}/{destinationPlace}/{outboundPartialDate}/{inboundPartialDate}?apiKey={apiKey}
-
-http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/en-GG/gbp/{locale}/{originPlace}/{destinationPlace}/{outboundPartialDate}/{inboundPartialDate}?apiKey={apiKey}
-
-http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/GBP/ES/LGW/EDI/2018-12-01/?apiKey=ha722831983754915283571036915780
-https://us-central1-aroundtheworld-1.cloudfunctions.net/getBooking/country=GB/currency=GBP/locale=ES/originPlace=LGW/destinationPlace=EDI/outboundPartialDate=2018-12-01?inboundPartialDate=2018-12-02
