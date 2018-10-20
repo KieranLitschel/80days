@@ -1,5 +1,5 @@
 $(document).ready(function() {
-  setUpMap();
+    setUpMap();
 })
 
 function setUpMap() {
@@ -19,6 +19,5 @@ function setUpMap() {
     mapDiv.style.height = '100%';
     mapCanvas.style.height = '100%';
     map.resize();
-
   });
 }

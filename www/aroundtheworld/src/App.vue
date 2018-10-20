@@ -8,7 +8,7 @@
         </div>
         <div class='profile'>
           <span>{{username}}</span>
-          <img src='./assets/logo.png'/>
+          <button id="signin"> Sign In! </button>
         </div>
        </header>
       <div class="map-wrapper">
@@ -36,6 +36,9 @@ export default {
 </script>
 
 <style>
+body {
+  margin: 0;
+}
 .profile {
   position: absolute;
   float: right;
@@ -86,5 +89,23 @@ header {
 }
 .map-wrapper {
   height: 100%;
+}
+.detail {
+  font-family: "Roboto", sans-serif;
+  background-color: white;
+  z-index: 1;
+  right: 0;
+  align-self: flex-end;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  margin-right: 50px;
+  min-width: 300px;
+  max-width: 300px;
+  height: 500px;
+  box-shadow:  -10px 10px 7px -4px rgba(0,0,0,0.42);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  overflow: hidden;
 }
 </style>

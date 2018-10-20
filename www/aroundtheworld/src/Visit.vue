@@ -12,6 +12,7 @@
 <script>
 
 export default {
+  props : ["location","time"],
   data() {
   return {
     'location':'Segrada de Familia',

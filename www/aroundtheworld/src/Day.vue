@@ -2,9 +2,9 @@
   <div>
     <p>{{weekday}} {{date}}</p>
     <div class="timeline">
-      <flight></flight>
-      <accomodation></accomodation>
-      <visit></visit>
+      <div v-for="add in to_add" v-if="">
+
+      </div>
     </div>
   </div>
 </template>
@@ -14,16 +14,20 @@ import Flight from './Flight.vue'
 import Accomodation from './Accomodation.vue'
 import Visit from './Visit.vue'
 
+
+
   export default {
     components : {
       'flight':Flight,
       'accomodation':Accomodation,
       'visit':Visit
     },
+    props:
+      ['events'],
     data() {
       return {
-      'weekday': 'Monday',
-      'date': '01/10/18'
+      'weekday': '',
+      'to_add':to_sort
         }
       }
   }
