@@ -1,5 +1,4 @@
 $(document).ready(function() {
-  new Vue({ el: '#vue-wrapper' });
   setUpMap();
 })
 
