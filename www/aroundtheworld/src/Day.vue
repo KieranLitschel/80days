@@ -3,15 +3,22 @@
     <p>{{weekday}} {{date}}</p>
     <div class="timeline">
       <flight></flight>
+      <accomodation></accomodation>
+      <visit></visit>
     </div>
   </div>
 </template>
 
 <script>
 import Flight from './Flight.vue'
+import Accomodation from './Accomodation.vue'
+import Visit from './Visit.vue'
+
   export default {
     components : {
-      'flight':Flight
+      'flight':Flight,
+      'accomodation':Accomodation,
+      'visit':Visit
     },
     data() {
       return {

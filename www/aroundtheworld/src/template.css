@@ -1,4 +1,4 @@
-body {
+body::after {
   margin: 0;
 }
 
@@ -8,6 +8,7 @@ body {
   bottom:0;
   width:100%;
   z-index: 0;
+  height: 100%;
 }
 
 header {
