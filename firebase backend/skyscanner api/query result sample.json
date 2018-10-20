@@ -1,1 +1,66 @@
-{"Quotes":[{"QuoteId":1,"MinPrice":36.0,"Direct":true,"OutboundLeg":{"CarrierIds":[881],"OriginId":65655,"DestinationId":49369,"DepartureDate":"2018-12-01T00:00:00"},"QuoteDateTime":"2018-10-19T19:54:00"}],"Places":[{"PlaceId":49369,"IataCode":"EDI","Name":"Edimburgo","Type":"Station","SkyscannerCode":"EDI","CityName":"Edimburgo","CityId":"EDIN","CountryName":"Reino Unido"},{"PlaceId":65655,"IataCode":"LGW","Name":"Londres Gatwick","Type":"Station","SkyscannerCode":"LGW","CityName":"Londres","CityId":"LOND","CountryName":"Reino Unido"}],"Carriers":[{"CarrierId":881,"Name":"British Airways"},{"CarrierId":1001,"Name":"Norwegian"},{"CarrierId":1050,"Name":"easyJet"}],"Currencies":[{"Code":"GBP","Symbol":"£","ThousandsSeparator":",","DecimalSeparator":".","SymbolOnLeft":true,"SpaceBetweenAmountAndSymbol":false,"RoundingCoefficient":0,"DecimalDigits":2}]}
+{
+  "Quotes": [
+    {
+      "QuoteId": 1,
+      "MinPrice": 36,
+      "Direct": true,
+      "OutboundLeg": {
+        "CarrierIds": [
+          881
+        ],
+        "OriginId": 65655,
+        "DestinationId": 49369,
+        "DepartureDate": "2018-12-01T00:00:00"
+      },
+      "QuoteDateTime": "2018-10-19T19:54:00"
+    }
+  ],
+  "Places": [
+    {
+      "PlaceId": 49369,
+      "IataCode": "EDI",
+      "Name": "Edimburgo",
+      "Type": "Station",
+      "SkyscannerCode": "EDI",
+      "CityName": "Edimburgo",
+      "CityId": "EDIN",
+      "CountryName": "Reino Unido"
+    },
+    {
+      "PlaceId": 65655,
+      "IataCode": "LGW",
+      "Name": "Londres Gatwick",
+      "Type": "Station",
+      "SkyscannerCode": "LGW",
+      "CityName": "Londres",
+      "CityId": "LOND",
+      "CountryName": "Reino Unido"
+    }
+  ],
+  "Carriers": [
+    {
+      "CarrierId": 881,
+      "Name": "British Airways"
+    },
+    {
+      "CarrierId": 1001,
+      "Name": "Norwegian"
+    },
+    {
+      "CarrierId": 1050,
+      "Name": "easyJet"
+    }
+  ],
+  "Currencies": [
+    {
+      "Code": "GBP",
+      "Symbol": "£",
+      "ThousandsSeparator": ",",
+      "DecimalSeparator": ".",
+      "SymbolOnLeft": true,
+      "SpaceBetweenAmountAndSymbol": false,
+      "RoundingCoefficient": 0,
+      "DecimalDigits": 2
+    }
+  ]
+}

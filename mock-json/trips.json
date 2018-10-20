@@ -1,0 +1,36 @@
+{
+    "trip-id (make this yourself)" : "ajdasdhasjkkasjdhajskhkjd",
+    "trip-name" : "Big squads big trip",
+    "member" :
+    [
+      "hash1",
+      "hash2",
+      "and so on"
+    ],
+    "itinery" : {
+      "date" : "01/01/01",
+      "plan" : {
+        "flight" : {
+          "flightnum" : "FR8888",
+          "departure" : {
+            "location": {
+              "name" : "Edinburgh",
+              "code" : "EDI"
+              },
+            "time" : "14:05"
+          },
+            "arrival" : {
+              "location" : {
+                "name" : "Barcelona El Prat",
+                "code" : "BCN"
+              },
+              "time" : "14:05"
+            }
+          }
+        },
+        "accomodation" : {
+          "address" : "123 Fake Street, 143",
+          "check-in" : "1200"
+        }
+    }
+}
