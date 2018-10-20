@@ -2,10 +2,9 @@
   <div class="flight">
     <div class="timeline-dot"></div>
     <div class="flight-info">
-      <p>Flight </p>
-      <p>{{flightnum}}</p>
-      <p class="times">{{dest}} ({{desttime}})</p>
-      <p class="times">{{arr}}({{arrtime}})</p>
+      <p>Visit </p>
+      <p>{{location}}</p>
+      <p class="times">Time: {{time}}</p>
     </div>
   </div>
 </template>
@@ -15,11 +14,8 @@
 export default {
   data() {
   return {
-    'flightnum' : 'FR2888',
-    'dest' : 'Edinburgh',
-    'desttime' : '0600',
-    'arr' : 'Barcelona',
-    'arrtime' : '0930'
+    'location':'Segrada de Familia',
+    'time':'1200'
     }
   }
 }

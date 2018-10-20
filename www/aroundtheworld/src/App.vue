@@ -52,22 +52,7 @@ export default {
 .profile img {
   width: 30px;
 }
-.detail {
-  font-family: "Roboto", sans-serif;
-  background-color: white;
-  z-index: 1;
-  right: 0;
-  align-self: flex-end;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  margin-right: 50px;
-  min-width: 300px;
-  height: 100%;
-  box-shadow:  0px 0px 50px 10px rgba(0,0,0,0.06);
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-}
+
 header {
   width: 100%;
   height: 70px;
@@ -92,5 +77,14 @@ header {
 }
 #app {
   font-family: "Roboto",sans-serif;
+  position:absolute;
+  top:0;
+  bottom:0;
+  width:100%;
+  z-index: 0;
+  height: 100%;
+}
+.map-wrapper {
+  height: 100%;
 }
 </style>
