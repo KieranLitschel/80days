@@ -9,8 +9,7 @@ const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 const firebase = require('firebase');
 
-/*
-var config = {
+const config = {
     apiKey: "AIzaSyCXt5F8NADgIJz_f33VlUb3WBI8o1WwgWM",
     authDomain: "aroundtheworld-1.firebaseapp.com",
     databaseURL: "https://aroundtheworld-1.firebaseio.com",
@@ -19,11 +18,9 @@ var config = {
     messagingSenderId: "831305387317"
 };
 firebase.initializeApp(config);
-*/
 
-exports.getBooking = functions.https.onRequest((req, res) => {
-    var request = new XMLHttpRequest();
-    var flightsApiKey = "ha722831983754915283571036915780";
+exports.getBriefQuote = functions.https.onRequest((req, res) => {
+    var flightsApiKey = getApiKey();
     const skyQuery = "http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/"
         + req.query["country"] + "/"
         + req.query["currency"] + "/"
@@ -32,8 +29,10 @@ exports.getBooking = functions.https.onRequest((req, res) => {
         + req.query["destinationPlace"] + "/"
         + req.query["outboundPartialDate"] + "/"
         + "?apiKey=" + flightsApiKey;
-    console.log("Called query: "+skyQuery);
+    console.log("Called query: " + skyQuery);
+    var request = new XMLHttpRequest();
     request.open('GET', skyQuery);
+    request.setRequestHeader("Accept", "application/xml");
     request.send();
     request.onreadystatechange = function () {
         console.log("While querying skyscanner got ready state " + String(this.readyState) + " and state " + String(this.state));
@@ -53,3 +52,61 @@ exports.getBooking = functions.https.onRequest((req, res) => {
         return res.status(408).send("Timed out");
     }
 });
+
+exports.getFullQuote = functions.https.onRequest((req, res) => {
+    getApiKey(apikey =>
+        createSession(apikey, req, res)
+    );
+});
+
+function getApiKey(callback) {
+    var ref = firebase.database().ref();
+    ref.on("value", function (snapshot) {
+        console.log("Got api key: " + snapshot.val()["flightsApiKey"]);
+        callback(snapshot.val()["flightsApiKey"])
+    }, function (error) {
+        console.log("Error when getting api key from db: " + error.code)
+    });
+}
+
+function createSession(apikey, req, res) {
+    var request = new XMLHttpRequest();
+    const postSession = "http://partners.api.skyscanner.net/apiservices/pricing/v1.0";
+    const params =
+        "country=" + req.query["country"] + "&" +
+        "currency=" + req.query["currency"] + "&" +
+        "locale=" + req.query["locale"] + "&" +
+        "originPlace=" + req.query["originPlace"] + "&" +
+        "destinationPlace=" + req.query["destinationPlace"] + "&" +
+        "outboundDate=" + req.query["outboundDate"] + "&" +
+        "adults=" + req.query["adults"] + "&" +
+        "apiKey=" + apikey;
+    console.log("Got session url: " + postSession);
+    request.open('POST', postSession);
+    request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    request.setRequestHeader("Accept", "application/xml");
+    request.setRequestHeader("X-Forwarded-For", req.query["ipAddress"]);
+    request.send(params);
+    request.onreadystatechange = function () {
+        console.log("While querying skyscanner got ready state " + String(this.readyState) + " and state " + String(this.status));
+        if (this.readyState === 4) {
+            console.log("Got session: " + request.getResponseHeader("location"));
+            return pollSession(request.getResponseHeader("location"), res, apikey);
+        }
+    };
+}
+
+function pollSession(session, res, apikey) {
+    var request = new XMLHttpRequest();
+    console.log("PARAMS ATTEMPT 1");
+    const params = "sortType=price&sortOrder=asc";
+    request.open("GET", session+"?sortType=price&sortOrder=asc&apiKey="+apikey);
+    request.setRequestHeader("Accept", "application/xml");
+    request.send(params);
+    request.onreadystatechange = function () {
+        console.log("While querying skyscanner got ready state " + String(this.readyState) + " and state " + String(this.status));
+        if (this.readyState === 4) {
+            return res.status(this.status).send(request.responseText);
+        }
+    };
+}
