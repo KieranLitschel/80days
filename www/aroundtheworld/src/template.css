@@ -25,34 +25,6 @@ header {
     height: 100%;
 }
 
-.detail {
-  font-family: "Roboto", sans-serif;
-  background-color: white;
-  z-index: 1;
-  right: 0;
-  align-self: flex-end;
-  margin-top: 30px;
-  margin-bottom: 30px;
-  margin-right: 50px;
-  min-width: 300px;
-  height: 100%;
-  box-shadow:  0px 0px 50px 10px rgba(0,0,0,0.06);
-  padding: 10px;
-  display: flex;
-  flex-direction: column;
-}
-.overview {
-  margin: 0;
-  line-height: 0;
-}
-.overview-title {
-  font-size: 1.5em;
-  color: red;
-}
-.overview p:nth-child(2) {
-  font-size: 0.8em;
-  line-height: 1em;
-}
 .map-wrapper {
   display: flex;
   flex-direction: column;
@@ -60,41 +32,4 @@ header {
   background-color: green;
   height: 100%;
   width: 100%;
-}
-.timeline {
-  border-left: 3px dotted #707070;
-  width: 100%;
-  background-color: #F0F0;
-  margin-top: -1em;
-  padding-top: 0.5em;
-  margin-left: 0.25em;
-}
-.flight {
-  display: flex;
-  flex-direction: row;
-  margin-left: 10px;
-  line-height: 0.4em;
-}
-.flight p:nth-child(1) {
-  font-size: 1.2em;
-}
-.flight p:nth-child(2) {
-  font-size: 0.8em;
-}
-.flight p:nth-child(3) {
-  font-size: 0.8em;
-}
-.flight-info {
-  margin-left: 10px;
-}
-.timeline-dot {
-  height: 20px;
-  width: 20px;
-  background-color: #1F7A8C;
-  border-radius: 50%;
-  display: inline;
-  margin-left: -21px;
-  margin-top: 0.9em;
-  box-shadow: 0px 0px 2px 2px rgba(0,0,0,0.3);
-
 }
