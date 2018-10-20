@@ -9,8 +9,7 @@ const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 const firebase = require('firebase');
 
-/*
-var config = {
+const config = {
     apiKey: "AIzaSyCXt5F8NADgIJz_f33VlUb3WBI8o1WwgWM",
     authDomain: "aroundtheworld-1.firebaseapp.com",
     databaseURL: "https://aroundtheworld-1.firebaseio.com",
@@ -19,11 +18,16 @@ var config = {
     messagingSenderId: "831305387317"
 };
 firebase.initializeApp(config);
-*/
 
 exports.getBooking = functions.https.onRequest((req, res) => {
+    var ref = firebase.database().ref();
+    var flightsApiKey = "";
+    ref.on("value", function(snapshot) {
+        flightsApiKey = snapshot.val()["flightsApiKey"]
+    }, function (error) {
+        console.log("Error when getting api key from db: " + error.code)
+    });
     var request = new XMLHttpRequest();
-    var flightsApiKey = "ha722831983754915283571036915780";
     const skyQuery = "http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/"
         + req.query["country"] + "/"
         + req.query["currency"] + "/"
@@ -34,6 +38,7 @@ exports.getBooking = functions.https.onRequest((req, res) => {
         + "?apiKey=" + flightsApiKey;
     console.log("Called query: "+skyQuery);
     request.open('GET', skyQuery);
+    request.setRequestHeader("Accept","application/json");
     request.send();
     request.onreadystatechange = function () {
         console.log("While querying skyscanner got ready state " + String(this.readyState) + " and state " + String(this.state));
