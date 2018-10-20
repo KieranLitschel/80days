@@ -2,7 +2,7 @@
   <div class="flight">
     <div class="timeline-dot"></div>
     <div class="flight-info">
-      <p>Visit </p>
+      <p>Visit</p>
       <p>{{location}}</p>
       <p class="times">Time: {{time}}</p>
     </div>
@@ -15,8 +15,7 @@ export default {
   props : ["location","time"],
   data() {
   return {
-    'location':'Segrada de Familia',
-    'time':'1200'
+
     }
   }
 }

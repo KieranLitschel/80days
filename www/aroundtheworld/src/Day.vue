@@ -1,9 +1,14 @@
 <template>
   <div>
-    <p>{{weekday}} {{date}}</p>
+    <p>{{weekday}} {{events[0].date}}</p>
     <div class="timeline">
-      <div v-for="add in to_add" v-if="">
-
+      <div v-for="d in events">
+        <visit
+          :v-if="d.type === 'visit'"
+          :location=d.place
+          :time=d.time
+          >
+        </visit>
       </div>
     </div>
   </div>
@@ -26,8 +31,8 @@ import Visit from './Visit.vue'
       ['events'],
     data() {
       return {
-      'weekday': '',
-      'to_add':to_sort
+        'weekday': 'BANGO',
+
         }
       }
   }

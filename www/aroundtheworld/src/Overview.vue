@@ -5,13 +5,12 @@
       <span v-for="member in members" class="overview-members">{{member}}</span>
       <nav class="detail-nav">
         <a id="overview" href='#'> Overview </a>
-        <a id="prices" href='#'> Prices </a>
-        <!-- add more -->
+          <!-- <a id="prices" href='#'> Prices </a> -->
       </nav>
     </div>
     <div v-if="tripHasContent" class='overview-wrapper' id="overview-wrapper">
-      <div v-for="d in dates">
-        <day v-bind:events="d"></day>
+      <div v-for="ev in events">
+        <day v-bind:events=ev> </day>
       </div>
     </div>
     <div v-else class="warning-wrapper" id="no-content">
@@ -49,22 +48,21 @@ import addvisitform from './AddVisitForm.vue'
 var t = JSON.parse(localStorage.getItem("trip"))
 var t = JSON.parse(localStorage.getItem("trip"));
 var hasContent = true;
+var events = []
 if (t == null) {
     hasContent = false;
     //TODO: set the old trip data to user input
-    localStorage.setItem('trip',JSON.stringify({"name":"Best Holiday","members":"Freddie","plan":[]}))
+    localStorage.setItem('trip',JSON.stringify({"name":"Best Holiday","members":"Freddie","plan":{}}))
     t = JSON.parse(localStorage.getItem('trip'));
-    var ds = []
   } else {
-    var dates = localStorage.getItem('dates');
-    if (dates == null || dates == []) {
+    if (Object.keys(t.plan).length === 0 && t.plan.constructor === Object) {
       hasContent = false;
-      var ds = []
     } else {
-      var ds = t.plan
+      for (var key in t.plan) {
+        events.push(t.plan[key])
+      }
     }
   }
-  console.log(hasContent)
 
 export default {
   components : {
@@ -79,7 +77,7 @@ export default {
       'tripHasContent' :hasContent,
       'title': t.name,
       'members':t.members,
-      'dates':ds,
+      'events':events,
       'bgColor': '#DB222A',
       'positiontype': "fixed",
       'iconsize': "small",
