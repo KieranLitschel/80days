@@ -9,6 +9,8 @@ const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 const firebase = require('firebase');
 
+const cors = require('cors')({origin: true});
+
 const config = {
     apiKey: "AIzaSyCXt5F8NADgIJz_f33VlUb3WBI8o1WwgWM",
     authDomain: "aroundtheworld-1.firebaseapp.com",
@@ -54,9 +56,59 @@ exports.getBriefQuote = functions.https.onRequest((req, res) => {
 });
 
 exports.getFullQuote = functions.https.onRequest((req, res) => {
-    getApiKey(apikey =>
-        createSession(apikey, req, res)
-    );
+    if (req.query["skyscanner"]==="true"){
+        req.query["originPlace"] = req.query["originPlace"] + "-sky";
+        req.query["destinationPlace"] = req.query["destinationPlace"] + "-sky";
+        getApiKey(apikey =>
+            createSession(apikey, req, res)
+        );
+    } else {
+        const getQuery = "http://8bdc5dc6.ngrok.io/api/" +
+            req.query["outboundDate"]+"/" +
+            req.query["outboundDate"]+"/" +
+            req.query["originPlace"]+"/" +
+            req.query["destinationPlace"];
+        var request = new XMLHttpRequest();
+        console.log("Asked victors api for "+getQuery);
+        request.open("GET",getQuery);
+        request.send();
+        console.log("Started victors api query");
+        request.onreadystatechange = function () {
+            console.log("While querying victors api got ready state " + String(this.readyState) + " and state " + String(this.status));
+            if (this.readyState === 4) {
+                var json_doc = JSON.parse(request.responseText);
+                var items = [];
+                for (var i = 0; i<json_doc.length; i++){
+                    var current = json_doc[i];
+                    var vals = {};
+                    vals.departTime = current[0].TimeOut;
+                    vals.arrivalTime = current[current.length-1].TimeIn;
+                    if (current[0].Airline==="RYAN"){
+                        vals.url = "https://www.ryanair.com/gb/en/";
+                    } else {
+                        vals.url = "https://www.vueling.com/en";
+                    }
+                    vals.price=0.0;
+                    for (var j = 0; j<current.length; j++){
+                        vals.price = vals.price+current[j].Price;
+                    }
+                    items.push(vals);
+                }
+                items.sort(function(a, b){
+                    var keyA = a.price,
+                        keyB = b.price;
+                    if(keyA < keyB) return -1;
+                    if(keyA > keyB) return 1;
+                    return 0;
+                });
+                var result = [];
+                for (i=0; i<5; i++){
+                    result.push(items[i])
+                }
+                return res.status(this.status).send(JSON.stringify(result));
+            }
+        };
+    }
 });
 
 function getApiKey(callback) {
@@ -84,7 +136,7 @@ function createSession(apikey, req, res) {
     console.log("Got session url: " + postSession);
     request.open('POST', postSession);
     request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-    request.setRequestHeader("Accept", "application/xml");
+    request.setRequestHeader("Accept", "application/json");
     request.setRequestHeader("X-Forwarded-For", req.query["ipAddress"]);
     request.send(params);
     request.onreadystatechange = function () {
@@ -98,15 +150,57 @@ function createSession(apikey, req, res) {
 
 function pollSession(session, res, apikey) {
     var request = new XMLHttpRequest();
-    console.log("PARAMS ATTEMPT 1");
-    const params = "sortType=price&sortOrder=asc";
-    request.open("GET", session+"?sortType=price&sortOrder=asc&apiKey="+apikey);
-    request.setRequestHeader("Accept", "application/xml");
-    request.send(params);
+    console.log("IMPROVE 0");
+    request.open("GET", session + "?pageIndex=0&sortType=price&sortOrder=asc&apiKey=" + apikey);
+    request.setRequestHeader("Accept", "application/json");
+    request.send();
     request.onreadystatechange = function () {
         console.log("While querying skyscanner got ready state " + String(this.readyState) + " and state " + String(this.status));
         if (this.readyState === 4) {
-            return res.status(this.status).send(request.responseText);
+            var json_doc = JSON.parse(request.responseText);
+            var result = json_doc.Itineraries;
+            var legIds = [];
+            var departTime = [];
+            var arriveTime = [];
+            var i;
+            for (i = 0; i < 5; i++) {
+                console.log("Entry "+String(i)+": "+JSON.stringify(result[i]));
+                var legId = result[i].OutboundLegId;
+                console.log("Leg Id="+legId);
+                legIds.push(legId);
+                departTime.push("");
+                arriveTime.push("")
+            }
+            //console.log("Leg IDs: "+JSON.stringify(legIds));
+            for (i = 0; i < 5; i++) {
+                var leg = json_doc.Legs[i];
+                //console.log("Leg Sample: "+JSON.stringify(leg));
+                for (var j = 0; j < 5; j++) {
+                    if (leg.Id === legIds[j]) {
+                        departTime[j] = leg.Departure;
+                        arriveTime[j] = leg.Arrival;
+                    }
+                }
+            }
+            var toReturn = "[";
+            console.log("First result: "+JSON.stringify(result[i]));
+            console.log("First pricing option: "+JSON.stringify(result[i].PricingOptions[0]));
+            for (i = 0; i < 5; i++) {
+                var dict = {};
+                dict.price = result[i].PricingOptions[0].Price;
+                console.log("Leg ID "+leg.Id+": Price="+result[i].PricingOptions[0].Price+","+"DepartTime="+departTime[i]+", ArriveTime="+arriveTime[i]);
+                dict.departTime = departTime[i];
+                dict.arrivalTime = arriveTime[i];
+                dict.url = result[i].PricingOptions[0].DeeplinkUrl;
+                var stringDict = JSON.stringify(dict);
+                toReturn = toReturn + stringDict;
+                if (i!==4){
+                    toReturn = toReturn + ",";
+                }
+                console.log("Journey "+String(i)+": "+stringDict);
+            }
+            toReturn = toReturn+"]";
+            return res.status(this.status).send(toReturn);
         }
     };
 }
