@@ -27,6 +27,7 @@ And it should be given the following arguments, with each value replacing {FIELD
     * Integer greater than 1.
 * ip_address - The IP address of the user
     * Input as a regular IP address, no need to use escape characters for the bullet points
+* skyscanner - Set to "true" if wish to use Skyscanner API, "false" if you wish to use Victor's
 
 
 
@@ -43,7 +44,7 @@ The API returns the 5 cheapest results as a JSON list of objects, each with 4 at
 
 An example query is the following:
 ```
-https://us-central1-aroundtheworld-1.cloudfunctions.net/getFullQuote?country=GB&currency=GBP&locale=en-GB&originPlace=LGW-sky&destinationPlace=EDI-sky&outboundDate=2018-12-01&adults=1&ipAddress=147.83.201.96
+https://us-central1-aroundtheworld-1.cloudfunctions.net/getFullQuote?country=GB&currency=GBP&locale=en-GB&originPlace=LGW-sky&destinationPlace=EDI-sky&outboundDate=2018-12-01&adults=1&ipAddress=147.83.201.96&skyscanner=true
 ```
 
 ## Example result:

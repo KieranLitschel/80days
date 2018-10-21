@@ -9,6 +9,8 @@ const XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 const firebase = require('firebase');
 
+const cors = require('cors')({origin: true});
+
 const config = {
     apiKey: "AIzaSyCXt5F8NADgIJz_f33VlUb3WBI8o1WwgWM",
     authDomain: "aroundtheworld-1.firebaseapp.com",
@@ -54,9 +56,59 @@ exports.getBriefQuote = functions.https.onRequest((req, res) => {
 });
 
 exports.getFullQuote = functions.https.onRequest((req, res) => {
-    getApiKey(apikey =>
-        createSession(apikey, req, res)
-    );
+    if (req.query["skyscanner"]==="true"){
+        req.query["originPlace"] = req.query["originPlace"] + "-sky";
+        req.query["destinationPlace"] = req.query["destinationPlace"] + "-sky";
+        getApiKey(apikey =>
+            createSession(apikey, req, res)
+        );
+    } else {
+        const getQuery = "http://8bdc5dc6.ngrok.io/api/" +
+            req.query["outboundDate"]+"/" +
+            req.query["outboundDate"]+"/" +
+            req.query["originPlace"]+"/" +
+            req.query["destinationPlace"];
+        var request = new XMLHttpRequest();
+        console.log("Asked victors api for "+getQuery);
+        request.open("GET",getQuery);
+        request.send();
+        console.log("Started victors api query");
+        request.onreadystatechange = function () {
+            console.log("While querying victors api got ready state " + String(this.readyState) + " and state " + String(this.status));
+            if (this.readyState === 4) {
+                var json_doc = JSON.parse(request.responseText);
+                var items = [];
+                for (var i = 0; i<json_doc.length; i++){
+                    var current = json_doc[i];
+                    var vals = {};
+                    vals.departTime = current[0].TimeOut;
+                    vals.arrivalTime = current[current.length-1].TimeIn;
+                    if (current[0].Airline==="RYAN"){
+                        vals.url = "https://www.ryanair.com/gb/en/";
+                    } else {
+                        vals.url = "https://www.vueling.com/en";
+                    }
+                    vals.price=0.0;
+                    for (var j = 0; j<current.length; j++){
+                        vals.price = vals.price+current[j].Price;
+                    }
+                    items.push(vals);
+                }
+                items.sort(function(a, b){
+                    var keyA = a.price,
+                        keyB = b.price;
+                    if(keyA < keyB) return -1;
+                    if(keyA > keyB) return 1;
+                    return 0;
+                });
+                var result = [];
+                for (i=0; i<5; i++){
+                    result.push(items[i])
+                }
+                return res.status(this.status).send(JSON.stringify(result));
+            }
+        };
+    }
 });
 
 function getApiKey(callback) {
