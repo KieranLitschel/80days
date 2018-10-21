@@ -7,6 +7,7 @@ function setUpMap() {
   var map = new mapboxgl.Map({
   container: 'map',
   style: 'mapbox://styles/mapbox/streets-v10'
+  
   });
   map.on('load', function() {
     var mapCanvas = document.getElementsByClassName('mapboxgl-canvas')[0];

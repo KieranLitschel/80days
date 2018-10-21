@@ -9,8 +9,37 @@ $(document).ready(function() {
       hoverEnabled: false
     });
   });
-  $('#search-flights').click(function() {
-    //TODO: Call K's API
+  $('#flight-search').click(function() {
+    var t = JSON.parse(localStorage.getItem('trip'))
+    var origin = $("#origin-airport").val();
+    var dest = $("#dest-airport").val();
+    var date = $('#outbound-date').val();
+    $.getJSON("assets/airports.json", function(json) {
+      json.forEach(function(x) {
+        if (x.name == origin) {
+          orCode = x.code;
+        } else if (x.name == dest) {
+          deCode = x.code
+        }
+      })
+      var new_flight = {"type":"flight","origin":orCode,"dest":deCode,"date":date}
+      if (t.plan == null) {
+        t.plan ={}
+      }
+      if (t.plan[date] == null)  {
+        t.plan[date] = [new_flight]
+      } else {
+        t.plan[date].push(new_flight)
+      }
+      localStorage.setItem('trip',JSON.stringify(t))
+      $('#flight-form').hide();
+      $('#overview-wrapper').show();
+      location.reload(); // this will show the info it in firebug console
+    });
+
+
+
+
   });
   $('#add-visit').click(function() {
     console.log("visit pressed")
@@ -82,38 +111,6 @@ $(document).ready(function() {
     $('#new-trip-form').hide();
     $('#no-content').show();
     location.reload(false);
-
-  });
-  $('#flight-search').click(function() {
-    console.log("searching")
-    var origin = $("#origin").val();
-    var currency = 'USD'
-    var locale = 'en-GG'
-
-    var outboundDate = $('#outbound-date').val();
-    var returnDate = $('#return-date').val();
-
-    var originCity = $('#origin-airport').val();
-    var destCity = $('#dest-airport').val();
-    // parse airports
-    var api = $('input[name=flightfinder]:checked').val();
-
-
-      console.log("In")
-      url = "http://partners.api.skyscanner.net/apiservices/browsequotes/v1.0/GB/EUR/en-GB/" +
-            originCity + '/' + destCity + "/" + outboundDate + "/''/AIzaSyCXt5F8NADgIJz_f33VlUb3WBI8o1WwgWM"
-      xhttp = new XMLHttpRequest();
-      xhttp.onreadystatechange = function() {
-        if (xhttp.status == 200 && xhttp.readyState == 4) {
-          alert("RESP: " + xhttp.responseText);
-        } else {
-          alert("STATUS: " + xhttp.status)
-        }
-      };
-      xhttp.open("GET",url,true);
-      xhttp.setRequestHeader('Access-Control-Allow-Origin', '*')
-
-      xhttp.send();
 
   });
 });

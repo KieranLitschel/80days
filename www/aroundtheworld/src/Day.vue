@@ -14,11 +14,11 @@
           >
         </accomodation>
         <flight v-if="d.type == 'flight'"
-          :flightnum=d.flightnum
-          :dest=d.dest
-          :desttime=d.desttime
-          :arr=d.arr
-          :arrtime=d.arrtime
+          :flightnum="FR8877"
+          :dest=d.origin
+          :desttime='1600'
+          :arr=d.dest
+          :arrtime='1830'
           >
         </flight>
       </div>

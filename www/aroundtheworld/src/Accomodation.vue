@@ -14,8 +14,8 @@
 export default {
   props : ['location','checkin'],
   data() {
-  return {
-
+    return {
+      
     }
   }
 }
