@@ -1,3 +1,5 @@
+
+
 $(document).ready(function() {
   document.addEventListener('DOMContentLoaded', function() {
     var elems = document.querySelectorAll('.fixed-action-btn');
@@ -31,6 +33,6 @@ $(document).ready(function() {
     $('#visit-form').hide();
 
     $('#overview-wrapper').show();
-    location.reload(false)
+    redraw()
   });
 });

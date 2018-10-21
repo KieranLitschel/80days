@@ -4,12 +4,14 @@
       <header>
         <div class='logo'>
           <img src='./assets/logo.png'/>
-          <span> Around The World </span>
+          <span> 80Days </span>
         </div>
-        <div class='profile'>
-          <span>{{username}}</span>
-          <button id="signin"> Sign In! </button>
-        </div>
+        <a href="#" id="new_trip">
+          <div class="profile">
+            <img src="src/assets/create.png"/>
+            <span>New</span>
+          </div>
+        </a>
        </header>
       <div class="map-wrapper">
         <div class="detail">
@@ -40,9 +42,20 @@ body {
   margin: 0;
 }
 .profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
   position: absolute;
   float: right;
-  right: 0
+  right: 50px;
+  top: 5px;
+  background-color: #E0E0E0;
+  border: 1px solid #E0E0E0;
+  border-radius: 2px;
+  padding: 10px;
+  text-decoration: none;
+  color: black;
 }
 .logo {
   float: left;
@@ -52,7 +65,14 @@ body {
   width: 40px;
   margin-left: 10px;
 }
+.logo span {
+  position: absolute;
+    padding: 10px;
+  top: 5px;
+  font-size: 24px;
+}
 .profile img {
+  margin-right: 10px;
   width: 30px;
 }
 
@@ -64,6 +84,7 @@ header {
   display: flex;
   flex-direction: row;
   align-items: center;
+  box-shadow: 0px 5px 7px -3px rgba(0,0,0,0.42);
 }
 
 .container {

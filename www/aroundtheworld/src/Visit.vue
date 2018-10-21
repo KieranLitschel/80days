@@ -2,7 +2,7 @@
   <div class="flight">
     <div class="timeline-dot"></div>
     <div class="flight-info">
-      <p>Visit</p>
+      <p>Attraction</p>
       <p>{{location}}</p>
       <p class="times">Time: {{time}}</p>
     </div>

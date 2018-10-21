@@ -12,10 +12,10 @@
 <script>
 
 export default {
+  props : ['location','checkin'],
   data() {
   return {
-    'location':'123 Fake Street, 5323',
-    'checkin':'1200'
+
     }
   }
 }

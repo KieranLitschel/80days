@@ -2,7 +2,7 @@
   <div class="overview">
     <div class="overview-header">
       <p class="overview-title">{{title}}</p>
-      <span v-for="member in members" class="overview-members">{{member}}</span>
+
       <nav class="detail-nav">
         <a id="overview" href='#'> Overview </a>
           <!-- <a id="prices" href='#'> Prices </a> -->
@@ -15,7 +15,6 @@
     </div>
     <div v-else class="warning-wrapper" id="no-content">
       Looks like you haven't added anything to the trip 🙈 <br>
-
       Start by clicking the button below.
     </div>
     <div class="form-wrapper" id="flight-form">
@@ -24,12 +23,18 @@
     <div class="form-wrapper" id="visit-form">
       <addvisitform></addvisitform>
     </div>
+    <div class="form-wrapper" id="hotel-form">
+      <addaccomdationform></addaccomdationform>
+    </div>
+    <div class="form-wrapper" id="new-trip-form">
+      <createnewtripform></createnewtripform>
+    </div>
     <div class="fab-wrapper">
       <fab :actions="fabActions"
        @addFlight="addFlight"
        @addHotel="addHotel"
        @addVisit="addVisit"
-       @addMeal="addMeal"
+       @toOverview="toOverview"
        :position-type="positiontype"
        :bg-color="bgColor"
        :icon-size="iconsize"
@@ -44,6 +49,9 @@ import Day from './Day.vue'
 import fab from 'vue-fab'
 import addflightform from './AddFlightForm.vue'
 import addvisitform from './AddVisitForm.vue'
+import addaccomdationform from './AddAccomodationForm.vue'
+import createnewtripform from './NewTripForm.vue'
+
 
 var t = JSON.parse(localStorage.getItem("trip"))
 var t = JSON.parse(localStorage.getItem("trip"));
@@ -61,6 +69,7 @@ if (t == null) {
       for (var key in t.plan) {
         events.push(t.plan[key])
       }
+      console.log(events.length)
     }
   }
 
@@ -69,8 +78,9 @@ export default {
     "day" : Day,
     'fab': fab,
     "addflightform":addflightform,
-    "addvisitform":addvisitform
-
+    "addvisitform":addvisitform,
+    "addaccomdationform":addaccomdationform,
+    "createnewtripform":createnewtripform
   },
   data() {
     return {
@@ -90,17 +100,17 @@ export default {
                 {
                     'name': 'addHotel',
                     'icon': 'hotel',
-                    'tooltip': 'Add Hotel'
+                    'tooltip': 'Add Accomodation'
                 },
                 {
                     'name': 'addVisit',
                     'icon': 'account_balance',
-                    'tooltip': 'Add Visit'
+                    'tooltip': 'Add Attraction'
                 },
                 {
-                    'name': 'addMeal',
-                    'icon': 'restaurant',
-                    'tooltip': 'Add Meal'
+                    'name': 'toOverview',
+                    'icon': 'home',
+                    'tooltip': 'Return to Overview'
                 }
             ]
       }
@@ -110,18 +120,36 @@ export default {
        $('#no-content').hide();
        $('#overview-wrapper').hide();
        $('#visit-form').hide();
+       $('#hotel-form').hide();
        $('#flight-form').show();
+       $("#new-trip-form").hide()
      },
      addVisit(){
        $('#no-content').hide();
        $('#overview-wrapper').hide();
-        $('#flight-form').hide();
+       $('#flight-form').hide();
        $('#visit-form').show();
-     },
-     addHotel(){
+       $('#hotel-form').hide();
+       $("#new-trip-form").hide()
+
 
      },
-     addMeal(){
+     addHotel(){
+       $('#no-content').hide();
+       $('#overview-wrapper').hide();
+        $('#flight-form').hide();
+       $('#visit-form').hide();
+       $('#hotel-form').show();
+       $("#new-trip-form").hide()
+
+     },
+     toOverview() {
+       $('#no-content').hide();
+       $('#overview-wrapper').show();
+        $('#flight-form').hide();
+       $('#visit-form').hide();
+       $('#hotel-form').hide();
+       $("#new-trip-form").hide()
 
      }
  }
@@ -205,6 +233,8 @@ export default {
   margin-left: 10px;
   line-height: 0.5em;
   font-size: 14px;
+  text-align: left;
+  flex-grow: 0;
 }
 .form-wrapper {
   display: none;
@@ -214,6 +244,6 @@ export default {
   align-items: center;
   justify-content: center;
   padding: 20px;
-  text-align: justify;
+  text-align: left;
 }
 </style>

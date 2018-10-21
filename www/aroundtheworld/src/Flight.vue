@@ -13,13 +13,10 @@
 <script>
 
 export default {
+  props : ['flightnum','dest','desttime','arr','arrtime'],
   data() {
   return {
-    'flightnum' : 'FR2888',
-    'dest' : 'Edinburgh',
-    'desttime' : '0600',
-    'arr' : 'Barcelona',
-    'arrtime' : '0930'
+
     }
   }
 }
